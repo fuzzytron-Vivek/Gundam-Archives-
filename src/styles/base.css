@@ -1,0 +1,310 @@
+/* ==========================================================================
+   BASE: reset, typography helpers, CRT overlay, shared primitives, boot screen
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 84px);
+}
+
+html.has-dossier body {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 400;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--c-amber);
+  color: #000;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-amber);
+  outline-offset: 2px;
+}
+
+/* --- Small uppercase technical label ------------------------------------ */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+}
+
+.skip-link {
+  position: fixed;
+  left: -9999px;
+  top: 8px;
+  z-index: 200;
+  padding: 8px 14px;
+  background: var(--c-amber);
+  color: #000;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.skip-link:focus {
+  left: 8px;
+}
+
+/* --- Status LED ---------------------------------------------------------- */
+.led {
+  --led: var(--c-green);
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: var(--led);
+  box-shadow: 0 0 6px var(--led);
+}
+
+.led--active {
+  --led: var(--c-green);
+}
+
+.led--archived {
+  --led: var(--c-cyan);
+}
+
+.led--unverified {
+  --led: var(--c-red);
+}
+
+.led--blink {
+  animation: blink 1.6s infinite;
+}
+
+@keyframes blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0.2;
+  }
+}
+
+/* --- Corner brackets (top-left + bottom-right) --------------------------- */
+.brackets {
+  position: relative;
+}
+
+.brackets::before,
+.brackets::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 0 solid var(--c-amber);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.brackets::before {
+  top: 6px;
+  left: 6px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.brackets::after {
+  right: 6px;
+  bottom: 6px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.btn {
+  padding: 10px 16px;
+  border: 1px solid var(--c-amber);
+  background: transparent;
+  color: var(--c-amber);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.btn:hover {
+  background: var(--c-amber);
+  color: #000;
+}
+
+/* ==========================================================================
+   CRT OVERLAY: noise, scanlines, slow scan beam
+   ========================================================================== */
+.crt {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.crt span {
+  position: absolute;
+  inset: 0;
+}
+
+.crt__noise {
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.crt__scan {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.03) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+.crt__beam {
+  inset: auto 0 auto 0;
+  height: 18vh;
+  background: linear-gradient(to bottom, transparent, rgba(242, 176, 30, 0.04), transparent);
+  animation: beam 9s linear infinite;
+}
+
+@keyframes beam {
+  from {
+    transform: translateY(-20vh);
+  }
+  to {
+    transform: translateY(105vh);
+  }
+}
+
+/* ==========================================================================
+   BOOT SCREEN
+   ========================================================================== */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: var(--c-bg);
+  cursor: pointer;
+  transition: opacity 300ms ease;
+}
+
+.boot.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.boot__panel {
+  width: min(560px, 100%);
+  padding: 28px;
+  border: 1px solid var(--c-line-strong);
+  background: var(--c-panel);
+}
+
+.boot__lines {
+  min-height: 9.5em;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--c-amber);
+}
+
+.boot__lines li::before {
+  content: '> ';
+  color: var(--c-text-dim);
+}
+
+.boot__lines li {
+  animation: line-in 160ms steps(4) both;
+}
+
+@keyframes line-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.boot__bar {
+  height: 6px;
+  margin-top: 18px;
+  border: 1px solid var(--c-line-strong);
+}
+
+.boot__fill {
+  display: block;
+  height: 100%;
+  background: var(--c-amber);
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+  transition: transform 220ms linear;
+}
+
+.boot__hint {
+  margin-top: 14px;
+}

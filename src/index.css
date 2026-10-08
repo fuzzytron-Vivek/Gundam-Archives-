@@ -1,0 +1,6 @@
+/* Entry stylesheet. Each partial owns one area of the interface. */
+@import './styles/theme.css';
+@import './styles/base.css';
+@import './styles/shell.css';
+@import './styles/roster.css';
+@import './styles/detail.css';
