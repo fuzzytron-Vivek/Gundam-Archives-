@@ -23,7 +23,7 @@ I hate web development.
 
 I like *Gundam*. I like mechanical design, a clean silhouette, and a spec sheet with too many numbers on it. The web has none of that. The web is a pile of half-finished standards held together by polyfills and spite, where centring a box is a rite of passage, a "simple" layout needs three wrappers and a prayer, and the fix for any bug is a CSS property you have to guess the name of. A whole generation of tooling exists to hide the fact that the underlying thing is a mess, and the tooling is also a mess.
 
-Somehow `node_modules` is bigger than the actual app, and I pulled in exactly two dependencies. Every tutorial assumes I want to build a to-do list, and I do not. This project exists because I wanted the database more than I hated CSS, and that margin was thin.
+Somehow `node_modules` is bigger than the actual app, and I pulled in exactly two dependencies. Every tutorial assumes I want to build a to-do list, and I do not. This project exists because I wanted the database more than I hated CSS, and that margin was thin. So I vibe coded it with an AI and steered, which is the only way I was going to finish it. It was built for a college DevOps skill lab, where the interesting part was meant to be the Docker and Nginx side, not the UI.
 
 It builds. It runs. The scanlines are load-bearing. If something looks off at 3 a.m. on a phone in portrait mode, that is the browser's fault, and I am not taking questions. Pull requests from people who enjoy this stuff are welcome, and you are all clearly sick in the head.
 
@@ -47,11 +47,11 @@ npm run build    # static site in dist/, ready for the Docker/Nginx image
 npm run preview  # serve the production build locally
 ```
 
-Plain Vite + React. No router, no state library, no backend, no accounts. React, React DOM and a lot of hand-written CSS that I resent writing. I kept the dependency list short because every package is another thing that can break for no reason on a Tuesday.
+Plain Vite + React. No router, no state library, no backend, no accounts. React, React DOM and a lot of CSS that I refused to write by hand. I kept the dependency list short because every package is another thing that can break for no reason on a Tuesday.
 
 ## Add the artwork
 
-I did not ship any official artwork, and the app does not pretend otherwise. Each card shows a **VISUAL FEED OFFLINE** placeholder with the path it is waiting for.
+The artwork is free cut-out PNGs collected from the internet. I could not find every unit, so any card without an image shows a **VISUAL FEED OFFLINE** placeholder with the path it is waiting for.
 
 1. Drop cut-out images (transparent PNG or WebP) into `public/assets/gundams/`.
 2. Name them as in the `image` field of each entry in `src/data/gundams.js`, for example `barbatos.png`.
@@ -67,7 +67,7 @@ Gundam Frame entries spread `FRAME_COMMON` for the shared frame name, power sour
 
 ## Honest data warning
 
-I compiled the roster by hand and I have not checked every field. Where I was confident, it is filled in. Where I was not, it says `UNRECORDED` instead of a guess. Many pilots, weapons and designations are still blank, and that is deliberate.
+The roster was put together with AI assistance and I have not verified every field. Where the data was solid, it is filled in. Where it was not, it says `UNRECORDED` instead of a guess. Many pilots, weapons and designations are still blank, and that is deliberate.
 
 The telemetry bars (mobility, armament, armor and so on) are **interface decoration, not canon measurements**. The dossier says so too. If you want accurate specs, check a proper source and fix the entry.
 
@@ -99,11 +99,10 @@ Theme colours, fonts, spacing and timing are CSS variables in `src/styles/theme.
 
 ## Fonts
 
-Bebas Neue, Barlow Condensed and IBM Plex Mono load from Google Fonts in `index.html`. Offline, the CSS falls back to local condensed and monospace fonts. It still works; it just looks slightly less expensive. Yes, I downloaded three fonts to make text look a bit different. This is what the industry does to people.
+Bebas Neue, Barlow Condensed and IBM Plex Mono load from Google Fonts in `index.html`. Offline, the CSS falls back to local condensed and monospace fonts. It still works; it just looks slightly less expensive. Yes, it pulls in three fonts to make text look a bit different. This is what the industry does to people.
 
 ## Disclaimer
 
-Unofficial fan project, made with love and made for fun. *Mobile Suit Gundam: Iron-Blooded Orphans*, its characters, mobile suits and all related names belong to their respective owners. No official artwork is included. Anything you drop into `public/assets/gundams/` is yours to supply and yours to be responsible for.
+Unofficial, non-commercial fan project, made with love and made for fun. *Mobile Suit Gundam: Iron-Blooded Orphans*, its characters, mobile suits, artwork and all related names belong to their respective owners (Sunrise / Bandai Namco and affiliates). The images in `public/assets/gundams/` were collected from free-PNG sites, I do not own them, and I am not claiming them or this franchise as mine. Nothing here is sold or monetised. If you are a rights holder and want something removed, open an issue and it will go.
 
 <p align="center"><sub>This README is done, and so is my interest in flexbox. Never again, until the next suit gets added.</sub></p>
-
