@@ -1,0 +1,421 @@
+/* ==========================================================================
+   DOSSIER: slide-in detail panel
+   ========================================================================== */
+.dossier-root {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dossier__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 4, 3, 0.78);
+  opacity: 0;
+  transition: opacity var(--t-med) ease;
+}
+
+.dossier-root.is-open .dossier__backdrop {
+  opacity: 1;
+}
+
+.dossier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(1180px, 100%);
+  height: 100%;
+  background: var(--c-bg-2);
+  border-left: 2px solid var(--c-amber);
+  transform: translateX(100%);
+  transition: transform var(--t-med) var(--ease);
+}
+
+.dossier-root.is-open .dossier {
+  transform: none;
+}
+
+/* --- Top bar ------------------------------------------------------------- */
+.dossier__bar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 52px;
+  padding-inline: 18px;
+  border-bottom: 1px solid var(--c-line-strong);
+  background: var(--c-panel);
+}
+
+.dossier__file {
+  color: var(--c-amber);
+}
+
+.dossier__nav {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 40px;
+  height: 36px;
+  padding-inline: 10px;
+  border: 1px solid var(--c-line-strong);
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+
+.icon-btn:hover:not(:disabled) {
+  border-color: var(--c-amber);
+  color: var(--c-amber);
+}
+
+.icon-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.icon-btn__text {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+}
+
+/* --- Layout -------------------------------------------------------------- */
+.dossier__scroll {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.dossier__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  min-height: 100%;
+}
+
+/* --- Visual column ------------------------------------------------------- */
+.dossier__visual {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: calc(100dvh - 52px);
+  overflow: hidden;
+  border-right: 1px solid var(--c-line);
+  background:
+    radial-gradient(ellipse at 50% 58%, rgba(242, 176, 30, 0.18), transparent 64%),
+    linear-gradient(var(--c-grid) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, var(--c-grid) 1px, transparent 1px) 0 0 / 32px 32px,
+    #0d0d0b;
+}
+
+.dossier__watermark {
+  position: absolute;
+  left: -2%;
+  bottom: -6%;
+  font-family: var(--font-display);
+  font-size: clamp(10rem, 22vw, 20rem);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(242, 176, 30, 0.28);
+  user-select: none;
+}
+
+.dossier__visual .sticker,
+.dossier__visual .feed-offline {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.dossier__visual .sticker {
+  --outline: 2px;
+  padding: 12% 8%;
+}
+
+.tag {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 1px solid var(--c-line-strong);
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.tag--tl {
+  top: 22px;
+  left: 22px;
+  border-color: var(--c-amber);
+  color: var(--c-amber);
+}
+
+.tag--mr {
+  top: 50%;
+  right: 0;
+  border-right: 0;
+}
+
+.tag--mr::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 48px;
+  height: 1px;
+  background: var(--c-amber);
+}
+
+.tag--bl {
+  bottom: 22px;
+  left: 22px;
+}
+
+.tag--br {
+  right: 22px;
+  bottom: 22px;
+  border: 0;
+  background: none;
+}
+
+/* --- Data column --------------------------------------------------------- */
+.dossier__data {
+  display: grid;
+  align-content: start;
+  gap: 28px;
+  padding: 28px clamp(18px, 3vw, 44px) 56px;
+}
+
+.dossier__title {
+  margin-block: 4px 12px;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 5.6vw, 5.4rem);
+  line-height: 0.88;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+.dossier__desc {
+  max-width: 52ch;
+  font-size: 1.12rem;
+  color: var(--c-text-soft);
+}
+
+.block {
+  padding-top: 12px;
+  border-top: 1px solid var(--c-line-strong);
+}
+
+.block__title {
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-amber);
+}
+
+.block__note {
+  margin-top: 12px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+}
+
+.field {
+  padding-block: 9px;
+  border-bottom: 1px dashed var(--c-line);
+}
+
+.field--list {
+  grid-column: 1 / -1;
+}
+
+.field dd {
+  margin-top: 2px;
+  font-size: 1.08rem;
+}
+
+.field__value.is-empty {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-text-dim);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.chips li {
+  padding: 3px 10px;
+  border: 1px solid var(--c-amber-dim);
+  background: var(--c-amber-wash);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+/* --- Telemetry ----------------------------------------------------------- */
+.telemetry-list {
+  display: grid;
+  gap: 10px;
+}
+
+.telemetry {
+  display: grid;
+  grid-template-columns: 10em minmax(0, 1fr) 3.4em;
+  align-items: center;
+  gap: 12px;
+}
+
+.telemetry__bar {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+  height: 14px;
+}
+
+.telemetry__seg {
+  background: #23231f;
+}
+
+.telemetry__seg.is-on {
+  background: var(--c-amber);
+  animation: seg-on 320ms linear both;
+  animation-delay: calc(var(--s) * 45ms + 250ms);
+}
+
+.telemetry.is-low .telemetry__seg.is-on {
+  background: var(--c-red);
+}
+
+@keyframes seg-on {
+  0% {
+    background: #23231f;
+  }
+  60% {
+    background: #fff3c4;
+  }
+}
+
+.telemetry__value {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-align: right;
+  color: var(--c-amber);
+  font-variant-numeric: tabular-nums;
+}
+
+.telemetry.is-low .telemetry__value {
+  color: var(--c-red);
+}
+
+.dossier__foot {
+  padding-top: 14px;
+  border-top: 1px solid var(--c-line-strong);
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+@media (max-width: 900px) {
+  .dossier {
+    border-left: 0;
+    border-top: 2px solid var(--c-amber);
+  }
+
+  .dossier__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier__visual {
+    position: relative;
+    height: min(78vw, 460px);
+    min-height: 300px;
+    border-right: 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .tag--mr,
+  .tag--br {
+    display: none;
+  }
+
+  .tag--tl {
+    top: 14px;
+    left: 14px;
+  }
+
+  .tag--bl {
+    bottom: 14px;
+    left: 14px;
+  }
+}
+
+@media (max-width: 560px) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+
+  .telemetry {
+    grid-template-columns: 7.5em minmax(0, 1fr) 3em;
+    gap: 8px;
+  }
+
+  .icon-btn__text {
+    display: none;
+  }
+
+  .dossier__bar {
+    padding-inline: 12px;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION (kept last so it wins the cascade)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .crt__beam {
+    display: none;
+  }
+
+  .statusbar__track {
+    animation: none !important;
+  }
+
+  .led--blink {
+    animation: none !important;
+  }
+}
