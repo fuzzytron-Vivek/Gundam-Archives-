@@ -106,3 +106,4 @@ Bebas Neue, Barlow Condensed and IBM Plex Mono load from Google Fonts in `index.
 Unofficial fan project, made with love and made for fun. *Mobile Suit Gundam: Iron-Blooded Orphans*, its characters, mobile suits and all related names belong to their respective owners. No official artwork is included. Anything you drop into `public/assets/gundams/` is yours to supply and yours to be responsible for.
 
 <p align="center"><sub>This README is done, and so is my interest in flexbox. Never again, until the next suit gets added.</sub></p>
+
